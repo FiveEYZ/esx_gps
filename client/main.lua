@@ -30,7 +30,7 @@ end)
 
 function hasGps (cb)
 	if (ESX == nil) then return cb(0) end
-		ESX.TriggerServerCallback('gps:checkIfHas', function(qtty)
+		ESX.TriggerServerCallback('esx_gps:checkIfHas', function(qtty)
 			cb(qtty > 0)
 		end, 'gps')
 end
