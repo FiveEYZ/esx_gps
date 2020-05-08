@@ -15,3 +15,14 @@ AddEventHandler('esx:onRemoveInventoryItem', function(source, item, count)
 		TriggerClientEvent('esx_gps:removeGPS', source)
 	end
 end)
+
+ESX.RegisterServerCallback('gps:checkIfHas', function(source, cb, item)
+	local xPlayer = ESX.GetPlayerFromId(source)
+        local items = xPlayer.getInventoryItem(item)
+
+        if items == nil then
+            cb(0)
+        else
+            cb(items.count)
+        end
+end)
