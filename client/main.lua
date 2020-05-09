@@ -8,25 +8,46 @@ Citizen.CreateThread(function()
 end)
 
 RegisterNetEvent('esx:playerLoaded')
-AddEventHandler('esx:playerLoaded', function(xPlayer)
-	PlayerData = xPlayer
+AddEventHandler('esx:playerLoaded', function()
+	hasGps(function (hasGps)
+	  if hasGps == true then
+		showRadar()
+	  else
+		hideRadar()
+	  end
+	end)
+end)
 
-	TriggerEvent('esx_gps:removeGPS')
-
-	if hasGps then
-		TriggerEvent('esx_gps:addGPS')
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(0)
+        hasGps(function (hasGps)
+          if hasGps == true then
+            showRadar()
+          else
+            hideRadar()
+          end
+        end)
 	end
 end)
 
 RegisterNetEvent('esx_gps:addGPS')
 AddEventHandler('esx_gps:addGPS', function()
-	DisplayRadar(true)
+	showRadar()
 end)
 
 RegisterNetEvent('esx_gps:removeGPS')
 AddEventHandler('esx_gps:removeGPS', function()
-	DisplayRadar(false)
+	hideRadar()
 end)
+
+function showRadar()
+	DisplayRadar(true)
+end
+
+function hideRadar()
+	DisplayRadar(false)
+end
 
 function hasGps (cb)
 	if (ESX == nil) then return cb(0) end
