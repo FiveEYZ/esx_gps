@@ -27,9 +27,11 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(1000)
-        if true then
-            hasGps(function (hasGps)
+		Citizen.Wait(1000)
+		if IsPedInAnyVehicle(GetPlayerPed(-1),  false) then
+			toggleRadar(true)
+		else
+			hasGps(function (hasGps)
                 if hasGps == false then
                     toggleRadar(false)
                     radar = true
