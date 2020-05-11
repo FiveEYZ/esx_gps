@@ -1,4 +1,4 @@
-local playerJoined, radar, PlayerData = false, false, {}
+local radar = false
 ESX = nil
 
 Citizen.CreateThread(function()
@@ -6,16 +6,10 @@ Citizen.CreateThread(function()
       TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
       Citizen.Wait(0)
     end
-    while ESX.GetPlayerData().job == nil do
-      Citizen.Wait(10)
-    end
-    PlayerData = ESX.GetPlayerData()
 end)
 
-RegisterNetEvent('esx:playerLoaded')
-AddEventHandler('esx:playerLoaded', function(xPlayer)
-    PlayerData = xPlayer    
-    playerJoined = true
+RegisterNetEvent('esx:onPlayerSpawn')
+AddEventHandler('esx:onPlayerSpawn', function()  
     hasGps(function (hasGps)
         if hasGps == true then
             toggleRadar(true)
@@ -27,11 +21,12 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-		Citizen.Wait(1000)
-		if IsPedInAnyVehicle(GetPlayerPed(-1),  false) then
-			toggleRadar(true)
-		else
-			hasGps(function (hasGps)
+        Citizen.Wait(1000)
+        if IsPedInAnyVehicle(GetPlayerPed(-1),  false) then
+            toggleRadar(true)
+            radar = false
+        else
+            hasGps(function (hasGps)
                 if hasGps == false then
                     toggleRadar(false)
                     radar = true
